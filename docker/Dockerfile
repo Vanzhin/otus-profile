@@ -11,13 +11,17 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
 		git \
         curl \
         htop \
+        libpq-dev \
         unzip \
         libzip-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install \
         opcache \
-        zip
+        zip \
+        pdo \
+        pdo_pgsql
+
 # копируется файл для php
 COPY php.ini /usr/local/etc/php/php.ini
 #копируется код для фреймворка
