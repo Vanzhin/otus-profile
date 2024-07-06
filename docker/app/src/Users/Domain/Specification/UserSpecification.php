@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace App\Users\Domain\Specification;
 
-use App\Share\Domain\Specification\SpecificationInterface;
-
-class UserSpecification implements SpecificationInterface
+class UserSpecification implements UserSpecificationInterface
 {
     public function __construct(
         public EmailUserSpecification     $emailUserSpecification,

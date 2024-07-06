@@ -20,6 +20,12 @@ services:
       App\Share\Domain\Specification\SpecificationInterface:
         public: true
 
+  App\*\Domain\Specification\:
+    namespace: App\
+    public: true
+    resource: '../src/*/Domain/Specification'
+    exclude: '../src/Share/*'
+
   App\*\Domain\Factory\:
     namespace: App\
     public: true

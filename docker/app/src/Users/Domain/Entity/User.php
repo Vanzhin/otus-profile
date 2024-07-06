@@ -7,6 +7,7 @@ namespace App\Users\Domain\Entity;
 use App\Share\Domain\Security\AuthUserInterface;
 use App\Share\Domain\Service\UlidService;
 use App\Users\Domain\Service\UserPasswordHasherInterface;
+use App\Users\Domain\Specification\UserSpecification;
 
 class User implements AuthUserInterface
 {
@@ -19,7 +20,8 @@ class User implements AuthUserInterface
     private array $roles = [];
 
     public function __construct(
-        string             $email,
+        string                    $email,
+        private UserSpecification $userSpecification,
 
     )
     {
@@ -40,6 +42,8 @@ class User implements AuthUserInterface
     public function setEmail(string $email): void
     {
         $this->email = $email;
+        $this->userSpecification->emailUserSpecification->satisfy($this);
+        $this->userSpecification->uniqEmailUserSpecification->satisfy($this);
     }
 
     public function getPassword(): ?string
@@ -73,6 +77,7 @@ class User implements AuthUserInterface
 
             return;
         }
+        $this->userSpecification->passwordUserSpecification->satisfy($password);
         $this->password = $hasher->hash($this, $password);
     }
 }
