@@ -8,6 +8,7 @@ if [ ! -f '.firstrun_php' ]; then
     touch '.firstrun_php'
     echo "Running composer install"
     composer --no-interaction install
+    php bin/console lexik:jwt:generate-keypair --skip-if-exists
 fi
 # команда, которая начинает слушать запросы на порту 8000
 php -S 0.0.0.0:$PORT $PUBLIC_DIR/$INDEX_FILE
