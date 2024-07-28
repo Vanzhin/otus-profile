@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Infrastructure\Database\Migrations;
+namespace App\Share\Infrastructure\Database\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240504124641 extends AbstractMigration
+final class Version20240519070942 extends AbstractMigration
 {
     public function getDescription(): string
     {
