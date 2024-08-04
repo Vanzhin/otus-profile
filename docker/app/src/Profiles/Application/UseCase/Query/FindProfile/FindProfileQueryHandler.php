@@ -23,13 +23,13 @@ readonly class FindProfileQueryHandler implements QueryHandlerInterface
     public function __invoke(FindProfileQuery $query): FindProfileQueryResult
     {
         $profile = $this->profileRepository->findOne($query->profileUlid);
+        if (!$profile) {
+            return new FindProfileQueryResult(null);
+        }
         AssertService::true(
             $this->accessControl->canAccess($query->userUlid, $profile),
             'Access denied.'
         );
-        if (!$profile) {
-            return new FindProfileQueryResult(null);
-        }
         $profileDTO = $this->profileDTOTransformer->fromProfileEntity($profile);
 
         return new FindProfileQueryResult($profileDTO);
