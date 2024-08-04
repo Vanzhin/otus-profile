@@ -17,20 +17,28 @@ services:
     resource: '../src/'
 
   _instanceof:
-      App\Share\Domain\Specification\SpecificationInterface:
-        public: true
+    App\Shared\Application\Command\CommandHandlerInterface:
+      tags:
+        - { name: messenger.message_handler, bus: command.bus }
+
+    App\Shared\Application\Query\QueryHandlerInterface:
+      tags:
+        - { name: messenger.message_handler, bus: query.bus }
+
+    App\Shared\Domain\Specification\SpecificationInterface:
+      public: true
 
   App\*\Domain\Specification\:
     namespace: App\
     public: true
     resource: '../src/*/Domain/Specification'
-    exclude: '../src/Share/*'
+    exclude: '../src/Shared/*'
 
   App\*\Domain\Factory\:
     namespace: App\
     public: true
     resource: '../src/*/Domain/Factory'
-    exclude: '../src/Share/*'
+    exclude: '../src/Shared/*'
 
   acme_api.event.jwt_created_listener:
     class: App\Share\Application\EventListener\JWTCreatedListener
