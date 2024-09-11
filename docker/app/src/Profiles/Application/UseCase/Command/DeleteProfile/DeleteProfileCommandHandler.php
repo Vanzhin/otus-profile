@@ -9,6 +9,7 @@ use App\Profiles\Domain\Repository\ProfileRepositoryInterface;
 use App\Profiles\Domain\Service\ProfileFetcher;
 use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Shared\Domain\Service\AssertService;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 readonly class DeleteProfileCommandHandler implements CommandHandlerInterface
 {
@@ -23,10 +24,9 @@ readonly class DeleteProfileCommandHandler implements CommandHandlerInterface
     public function __invoke(DeleteProfileCommand $command): DeleteProfileCommandResult
     {
         $profile = $this->profileFetcher->getRequiredProfile($command->ulid);
-        AssertService::true(
-            $this->accessControl->canAccess($command->userUlid, $profile),
-            'Access denied.'
-        );
+        if (!$this->accessControl->canAccess($command->userUlid, $profile)) {
+            throw new AccessDeniedHttpException('Access denied.');
+        }
         $this->profileRepository->delete($profile);
 
         return new DeleteProfileCommandResult($profile->getUlid());
