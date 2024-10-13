@@ -9,6 +9,7 @@ use App\Profiles\Application\UseCase\Command\CreateProfile\CreateProfileCommand;
 use App\Profiles\Application\UseCase\Command\DeleteProfile\DeleteProfileCommand;
 use App\Profiles\Application\UseCase\Command\UpdateProfile\UpdateProfileCommand;
 use App\Profiles\Application\UseCase\Query\FindProfile\FindProfileQuery;
+use App\Profiles\Application\UseCase\Query\FindUserProfile\FindUserProfileQuery;
 use App\Shared\Application\Command\CommandBusInterface;
 use App\Shared\Application\Query\QueryBusInterface;
 use App\Shared\Domain\Service\AssertService;
@@ -32,8 +33,11 @@ class ProfileController extends AbstractController
     #[Route('/my', name: 'get_my', methods: ['GET'])]
     public function getMyProfile(): JsonResponse
     {
-        dd(1111);
-        $query = new FindProfileQuery($ulid, $this->headersService->getUserUlid());
+        $userId = $this->headersService->getUserUlid();
+        if (!$userId) {
+            return new JsonResponse('No user ID provided.');
+        }
+        $query = new FindUserProfileQuery($this->headersService->getUserUlid());
         $result = $this->queryBus->execute($query);
         if (!$result->profileDTO) {
             return new JsonResponse('No profile found.');
