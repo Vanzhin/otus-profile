@@ -37,7 +37,7 @@ class ProfileController extends AbstractController
         if (!$userId) {
             return new JsonResponse('No user ID provided.');
         }
-        $query = new FindUserProfileQuery($this->headersService->getUserUlid());
+        $query = new FindUserProfileQuery($userId);
         $result = $this->queryBus->execute($query);
         if (!$result->profileDTO) {
             return new JsonResponse('No profile found.');
