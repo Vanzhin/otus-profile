@@ -29,6 +29,18 @@ class ProfileController extends AbstractController
     )
     {
     }
+    #[Route('/my', name: 'get_my', methods: ['GET'])]
+    public function getMyProfile(): JsonResponse
+    {
+        dd(1111);
+        $query = new FindProfileQuery($ulid, $this->headersService->getUserUlid());
+        $result = $this->queryBus->execute($query);
+        if (!$result->profileDTO) {
+            return new JsonResponse('No profile found.');
+        }
+
+        return new JsonResponse($result->profileDTO);
+    }
 
     #[Route('/{ulid}', name: 'get', methods: ['GET'])]
     public function get(string $ulid): JsonResponse
@@ -41,6 +53,7 @@ class ProfileController extends AbstractController
 
         return new JsonResponse($result->profileDTO);
     }
+
 
     #[Route('/add', name: 'add', methods: ['POST'])]
     public function add(Request $request): JsonResponse
