@@ -30,9 +30,9 @@ framework:
                         name: 'users'
                         type: topic
                     queues:
-                        users_general:
+                        users.profile:
                             binding_keys: [ '#' ]
-                    auto_setup: false
+                    auto_setup: true
 
         routing:
             'App\Shared\Domain\Message\ExternalMessage': external_messages
